@@ -1,0 +1,16 @@
+# code_examples/prompts.yaml
+version: "1.0.0"
+models:
+  tier_1: "gpt-4o-mini"
+  tier_2: "gpt-4o"
+
+prompts:
+  customer_support_router:
+    description: "Routes incoming user queries to the correct department."
+    system_message: |
+      You are an intelligent routing agent. 
+      Analyze the user's input and output exactly one of the following JSON categories:
+      ["billing", "technical_support", "refunds", "general"]
+    temperature: 0.1
+    max_tokens: 50
+    

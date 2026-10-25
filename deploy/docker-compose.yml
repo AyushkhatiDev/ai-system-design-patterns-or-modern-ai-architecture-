@@ -2,17 +2,6 @@ version: '3.8'
 
 services:
   api:
-  worker:
-    build: 
-      context: ../
-      dockerfile: deploy/Dockerfile
-    command: ["celery", "-A", "code_examples.celery_worker.celery_app", "worker", "--loglevel=info"]
-    environment:
-      - REDIS_URL=redis://cache:6379/0
-    depends_on:
-      - cache
-    networks:
-      - ai-network
     build: 
       context: ../
       dockerfile: deploy/Dockerfile
@@ -25,6 +14,18 @@ services:
     depends_on:
       - cache
       - jaeger
+    networks:
+      - ai-network
+
+  worker:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    command: ["celery", "-A", "code_examples.celery_worker.celery_app", "worker", "--loglevel=info"]
+    environment:
+      - REDIS_URL=redis://cache:6379/0
+    depends_on:
+      - cache
     networks:
       - ai-network
 
