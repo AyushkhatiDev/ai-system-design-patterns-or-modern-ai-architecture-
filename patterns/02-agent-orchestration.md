@@ -7,13 +7,13 @@ Multi-Agent Orchestration utilizes a "Router" or "Supervisor" agent to interpret
 ```mermaid
 flowchart TD
     User((User)) -->|Complex Prompt| API[FastAPI Orchestrator]
-    API -->|State Trigger| Router{Supervisor Agent\n(GPT-4o)}
+    API -->|State Trigger| Router{"Supervisor Agent<br>(GPT-4o)"}
 
-    Router -->|Task 1| R_Agent[Research Agent\n(Web Search / Tavily)]
-    Router -->|Task 2| C_Agent[Code Agent\n(Python Interpreter)]
-    Router -->|Task 3| SQL_Agent[Data Agent\n(Read-Only DB Access)]
+    Router -->|Task 1| R_Agent["Research Agent<br>(Web Search / Tavily)"]
+    Router -->|Task 2| C_Agent["Code Agent<br>(Python Interpreter)"]
+    Router -->|Task 3| SQL_Agent["Data Agent<br>(Read-Only DB Access)"]
 
-    R_Agent -->|Returns Summary| Aggregator[Aggregator / Synthesizer]
+    R_Agent -->|Returns Summary| Aggregator["Aggregator / Synthesizer"]
     C_Agent -->|Returns Execution Result| Aggregator
     SQL_Agent -->|Returns JSON Data| Aggregator
 
