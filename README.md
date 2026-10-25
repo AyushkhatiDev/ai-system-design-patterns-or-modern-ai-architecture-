@@ -20,7 +20,7 @@ Each pattern includes an interactive architecture diagram, cost analysis at scal
 | **[03. Semantic Caching](./patterns/03-semantic-caching.md)** | Reducing LLM API costs and latency via Redis/Vector caches | DevOps, Backend | 🟢 Available |
 | **[04. Streaming UI & SSE](./patterns/04-streaming-ui.md)** | Handling Server-Sent Events and optimistic rendering | Frontend | 🟢 Available |
 
-3
+
 
 ---
 
