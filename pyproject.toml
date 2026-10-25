@@ -1,0 +1,6 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# Ignore root logger warnings and strict import sorting 
+ignore = ["LOG015", "I001"]
