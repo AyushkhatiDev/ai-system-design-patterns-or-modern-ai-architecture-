@@ -23,6 +23,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+        pip install ruff mypy pre-commit types-redis
+
+    - name: Lint and Type Check
+      run: |
+        ruff check .
+        ruff format --check .
+        mypy code_examples/ --ignore-missing-imports
 
     - name: Run Pytest
       run: |

@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import Dict, Any
 import numpy as np
 from fastapi import FastAPI
 from sentence_transformers import SentenceTransformer
@@ -14,14 +15,13 @@ redis_client = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
 SIMILARITY_THRESHOLD = 0.95 
 
-def cosine_similarity(vec_a, vec_b):
-    return np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b))
+def cosine_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
+    return float(np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b)))
 
 @app.post("/api/chat")
-async def chat_endpoint(user_query: str):
+async def chat_endpoint(user_query: str) -> Dict[str, Any]:
     query_vector = embedding_model.encode(user_query)
     
-    # GRACEFUL DEGRADATION: If Redis fails, log the error and bypass the cache
     try:
         cached_keys = await redis_client.keys("cache:*")
         for key in cached_keys:
@@ -35,12 +35,11 @@ async def chat_endpoint(user_query: str):
                     return {
                         "response": cache_entry["llm_response"],
                         "cache_hit": True,
-                        "similarity_score": round(float(similarity), 3)
+                        "similarity_score": round(similarity, 3)
                     }
     except RedisError as e:
         logging.error(f"Redis cache unavailable: {e}. Bypassing cache.")
 
-    # Fallback to LLM (Simulated)
     llm_response = "This is a freshly generated response from the LLM."
     
     try:
