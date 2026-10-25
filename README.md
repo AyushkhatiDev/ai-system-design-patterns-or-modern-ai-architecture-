@@ -25,10 +25,7 @@ Each pattern includes an interactive architecture diagram, cost analysis at scal
 
 ## 🧪 Local Production Laboratory
 
-We don't just write Markdown; we test it. You can spin up the full semantic caching gateway and observability stack locally using Docker.
-
-Features include:
-* **OpenTelemetry & Jaeger Tracing:** Full distributed tracing implementation to track latency bottlenecks across embeddings, cache lookups, and LLM generation.
+We don't just write Markdown; we test it. You can spin up the full semantic caching gateway, background workers, and observability stack locally using Docker.
 
 ```bash
 cd deploy
