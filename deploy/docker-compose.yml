@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  api:
+    build: 
+      context: ../
+      dockerfile: deploy/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://cache:6379
+      - MODEL_ENV=production
+    depends_on:
+      - cache
+    networks:
+      - ai-network
+
+  # Semantic Cache & Rate Limiting
+  cache:
+    image: redis/redis-stack-server:latest
+    ports:
+      - "6379:6379"
+    networks:
+      - ai-network
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+
+  # Observability & Telemetry (Simulated)
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+    driver: bridge

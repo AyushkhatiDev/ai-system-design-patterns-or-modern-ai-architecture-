@@ -21,6 +21,14 @@ Each pattern includes an interactive architecture diagram, cost analysis at scal
 | **[04. Streaming UI & SSE](./patterns/04-streaming-ui.md)** | Handling Server-Sent Events and optimistic rendering | Frontend | 🟢 Available |
 | **[05. Tiered Request Routing](./patterns/05-tiered-request-routing.md)** | Cost-aware model routing and circuit breakers | Backend, Staff Engineers | 🟢 Available |
 
+## 🧪 Local Production Laboratory
+
+We don't just write Markdown; we test it. You can spin up the full semantic caching gateway and observability stack locally using Docker.
+
+```bash
+cd deploy
+docker-compose up -d
+
 
 
 ---
