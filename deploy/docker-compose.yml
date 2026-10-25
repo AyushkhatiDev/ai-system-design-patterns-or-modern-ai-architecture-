@@ -8,14 +8,15 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - REDIS_URL=redis://cache:6379
+      - REDIS_HOST=cache
+      - OTLP_ENDPOINT=http://jaeger:4317
       - MODEL_ENV=production
     depends_on:
       - cache
+      - jaeger
     networks:
       - ai-network
 
-  # Semantic Cache & Rate Limiting
   cache:
     image: redis/redis-stack-server:latest
     ports:
@@ -27,13 +28,12 @@ services:
         limits:
           memory: 2G
 
-  # Observability & Telemetry (Simulated)
-  prometheus:
-    image: prom/prometheus:latest
+  # New Distributed Tracing UI
+  jaeger:
+    image: jaegertracing/all-in-one:latest
     ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - "16686:16686" # Jaeger Web UI
+      - "4317:4317"   # OTLP gRPC endpoint
     networks:
       - ai-network
 
