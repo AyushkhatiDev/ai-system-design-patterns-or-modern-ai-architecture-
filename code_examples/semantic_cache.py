@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import Dict, Any
+from typing import Any
 import numpy as np
 from fastapi import FastAPI
 from sentence_transformers import SentenceTransformer
@@ -44,7 +44,7 @@ def cosine_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
     return float(np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b)))
 
 @app.post("/api/chat")
-async def chat_endpoint(user_query: str) -> Dict[str, Any]:
+async def chat_endpoint(user_query: str) -> dict[str, Any]:
     # We can create custom spans to track exactly how long the embedding takes
     with tracer.start_as_current_span("generate_embedding"):
         query_vector = embedding_model.encode(user_query)
