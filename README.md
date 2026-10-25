@@ -17,7 +17,7 @@ Each pattern includes an interactive architecture diagram, cost analysis at scal
 | :--- | :--- | :--- | :--- |
 | **[01. Enterprise RAG (Retrieval-Augmented Generation)](./patterns/01-enterprise-rag.md)** | Secure data retrieval with open-source local LLMs | Backend, Infra, FDE | 🟢 Available |
 | **[02. Multi-Agent Orchestration](./patterns/02-agent-orchestration.md)** | Router agents and specialized task delegation | AI Engineers | 🟢 Available |
-| **[03. Semantic Caching](./patterns/03-semantic-caching.md)** | Reducing LLM API costs and latency via Redis/Vector caches | DevOps, Backend | 🟡 Drafting |
+| **[03. Semantic Caching](./patterns/03-semantic-caching.md)** | Reducing LLM API costs and latency via Redis/Vector caches | DevOps, Backend | 🟢 Available |
 | **[04. Streaming UI & SSE](./patterns/04-streaming-ui.md)** | Handling Server-Sent Events and optimistic rendering | Frontend | 🟡 Drafting |
 
 ---
