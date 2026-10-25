@@ -2,6 +2,7 @@ import yaml
 from pathlib import Path
 from typing import Any
 
+
 class PromptManager:
     def __init__(self, config_path: str = "code_examples/prompts.yaml"):
         self.config_path = Path(config_path)
@@ -15,6 +16,7 @@ class PromptManager:
         if prompt_name not in self._prompts["prompts"]:
             raise ValueError(f"Prompt {prompt_name} not found in configuration.")
         return self._prompts["prompts"][prompt_name]
+
 
 # Usage example:
 # manager = PromptManager()

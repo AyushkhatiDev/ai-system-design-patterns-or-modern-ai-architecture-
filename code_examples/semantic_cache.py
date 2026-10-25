@@ -38,17 +38,19 @@ redis_host = os.getenv("REDIS_HOST", "localhost")
 redis_client = redis.Redis(host=redis_host, port=6379, decode_responses=True)
 tracer = trace.get_tracer(__name__)
 
-SIMILARITY_THRESHOLD = 0.95 
+SIMILARITY_THRESHOLD = 0.95
+
 
 def cosine_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
     return float(np.dot(vec_a, vec_b) / (np.linalg.norm(vec_a) * np.linalg.norm(vec_b)))
+
 
 @app.post("/api/chat")
 async def chat_endpoint(user_query: str) -> dict[str, Any]:
     # We can create custom spans to track exactly how long the embedding takes
     with tracer.start_as_current_span("generate_embedding"):
         query_vector = embedding_model.encode(user_query)
-    
+
     with tracer.start_as_current_span("redis_cache_lookup"):
         try:
             cached_keys = await redis_client.keys("cache:*")
@@ -57,13 +59,13 @@ async def chat_endpoint(user_query: str) -> dict[str, Any]:
                 if cached_data:
                     cache_entry = json.loads(cached_data)
                     cached_vector = np.array(cache_entry["vector"])
-                    
+
                     similarity = cosine_similarity(query_vector, cached_vector)
                     if similarity >= SIMILARITY_THRESHOLD:
                         return {
                             "response": cache_entry["llm_response"],
                             "cache_hit": True,
-                            "similarity_score": round(similarity, 3)
+                            "similarity_score": round(similarity, 3),
                         }
         except RedisError as e:
             logging.error(f"Redis cache unavailable: {e}. Bypassing cache.")
@@ -71,22 +73,12 @@ async def chat_endpoint(user_query: str) -> dict[str, Any]:
     with tracer.start_as_current_span("llm_generation"):
         # Simulated LLM call
         llm_response = "This is a freshly generated response from the LLM."
-    
+
     with tracer.start_as_current_span("redis_cache_write"):
         try:
-            new_cache_entry = {
-                "vector": query_vector.tolist(),
-                "llm_response": llm_response
-            }
-            await redis_client.setex(
-                f"cache:{hash(user_query)}", 
-                86400, 
-                json.dumps(new_cache_entry)
-            )
+            new_cache_entry = {"vector": query_vector.tolist(), "llm_response": llm_response}
+            await redis_client.setex(f"cache:{hash(user_query)}", 86400, json.dumps(new_cache_entry))
         except RedisError as e:
             logging.error(f"Failed to write to Redis cache: {e}")
-    
-    return {
-        "response": llm_response,
-        "cache_hit": False
-    }
+
+    return {"response": llm_response, "cache_hit": False}
