@@ -8,6 +8,5 @@ RUN apt-get update && apt-get install -y build-essential
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./code-examples /app/code-examples
-
-CMD ["uvicorn", "code-examples.semantic_cache:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY ./code_examples /app/code_examples
+CMD ["uvicorn", "code_examples.semantic_cache:app", "--host", "0.0.0.0", "--port", "8000"]
